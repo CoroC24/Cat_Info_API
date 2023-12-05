@@ -1,0 +1,24 @@
+<resources>
+    <string name="app_name">Cat Info</string>
+    <string name="default_description">Default Description</string>
+    <string name="title">TITLE</string>
+    <string name="description">DESCRIPTION</string>
+    <string name="temperament">TEMPERAMENT</string>
+    <string name="origin">Origin: </string>
+    <string name="life_span">Life Span: </string>
+    <string name="breed_characteristics">BREED CHARACTERISTICS</string>
+    <string name="wikipedia_url">Wikipedia Url: </string>
+    <string name="adaptability">Adaptability</string>
+    <string name="social_needs">Social Needs</string>
+    <string name="health_issues">Health Issues</string>
+    <string name="shedding_level">Shedding Level</string>
+    <string name="intelligence">Intelligence</string>
+    <string name="affectionate">Affectionate</string>
+    <string name="energy_level">Energy Level</string>
+    <string name="dog_friendly">Dog Friendly</string>
+    <string name="stranger_friendly">Stranger Friendly</string>
+    <string name="child_friendly">Child Friendly</string>
+    <string name="grooming">Grooming</string>
+    <string name="weight">Weight: </string>
+    <string name="no_internet_connection">NO INTERNET CONNECTION</string>
+</resources>
