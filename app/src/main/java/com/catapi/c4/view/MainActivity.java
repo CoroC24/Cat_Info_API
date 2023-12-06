@@ -1,7 +1,9 @@
 package com.catapi.c4.view;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -13,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,6 +28,8 @@ import com.catapi.c4.data.remote.ApiService;
 import com.catapi.c4.data.remote.ApiUtils;
 import com.catapi.c4.model.Utils;
 import com.catapi.c4.view.adapter.AnswersAdapter;
+import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +45,9 @@ public class MainActivity extends AppCompatActivity {
     private ApiService apiService;
     private SwipeRefreshLayout swipeRefresh;
     private LinearLayout noInternetLayout;
+    private DrawerLayout drawerLayout;
+    private MaterialToolbar topAppBar;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +58,11 @@ public class MainActivity extends AppCompatActivity {
 
         swipeRefresh = findViewById(R.id.swipeRefresh);
         noInternetLayout = findViewById(R.id.layoutNoInternet);
-        apiService = ApiUtils.getApiService();
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigationView);
         recyclerView = findViewById(R.id.layoutRecyclerView);
+        topAppBar = findViewById(R.id.topAppBar);
+        apiService = ApiUtils.getApiService();
         answersAdapter = new AnswersAdapter(this, new ArrayList<>(0), new AnswersAdapter.OnItemClickListener() {
             @Override
             public void onPostClick(ListCatResponse data) {
@@ -71,6 +82,15 @@ public class MainActivity extends AppCompatActivity {
 
         loadData();
         swipeRefresh();
+
+        topAppBar.setNavigationOnClickListener(view -> {
+            drawerLayout.open();
+        });
+
+        navigationView.setNavigationItemSelectedListener(item -> {
+            drawerLayout.close();
+            return false;
+        });
     }
 
     @Override
@@ -97,12 +117,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void swipeRefresh() {
         swipeRefresh.setColorSchemeColors(Color.parseColor("#00B3FF"), Color.parseColor("#007DFE"));
-        swipeRefresh.setOnRefreshListener(() -> {
-            loadData();
-            /*new Handler().postDelayed(() -> {
-                swipeRefresh.setRefreshing(false);
-            }, 3000);*/
-        });
+        swipeRefresh.setOnRefreshListener(this::loadData);
     }
 
     public void loadData() {

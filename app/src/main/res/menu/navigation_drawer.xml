@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/favourites_item"
+        android:checkable="true"
+        android:icon="@drawable/favourite_icon"
+        android:title="@string/favourites_title" />
+</menu>

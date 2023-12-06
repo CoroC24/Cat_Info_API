@@ -4,5 +4,6 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
         <item name="android:statusBarColor">@color/backgroundColorNight</item>
+        <item name="android:windowTranslucentStatus">true</item>
     </style>
 </resources>

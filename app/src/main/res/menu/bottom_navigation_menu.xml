@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navCat"
+        android:enabled="true"
+        android:icon="@drawable/ic_start_empty"/>
+    <item
+        android:id="@+id/navFavourites"
+        android:enabled="true"
+        android:icon="@drawable/favourite_icon"/>
+
+    <item
+        android:id="@+id/navAccount"
+        android:enabled="true"
+        android:icon="@drawable/account_icon"/>
+</menu>

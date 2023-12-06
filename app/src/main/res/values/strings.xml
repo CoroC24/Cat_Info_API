@@ -21,4 +21,17 @@
     <string name="grooming">Grooming</string>
     <string name="weight">Weight: </string>
     <string name="no_internet_connection">NO INTERNET CONNECTION</string>
+    <string name="favorite">Favorite</string>
+    <string name="content_description_favorite">Favorite Cats</string>
+    <string name="more">More</string>
+    <string name="content_description_more">More Options</string>
+    <string name="search">Search</string>
+    <string name="content_description_search">Search Cats by Name</string>
+    <string name="account">Account</string>
+    <string name="cat_image">Cat Image</string>
+    <string name="options_subheader_title">Options</string>
+    <string name="favourites_title">Favourites</string>
+    <string name="header_title">Options</string>
+    <string name="header_text">Select an option</string>
+    <string name="cats">Cats</string>
 </resources>
