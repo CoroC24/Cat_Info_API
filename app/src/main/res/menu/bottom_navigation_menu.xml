@@ -2,14 +2,17 @@
     <item
         android:id="@+id/navCat"
         android:enabled="true"
-        android:icon="@drawable/ic_start_empty"/>
+        android:icon="@drawable/cat_icon"
+        android:title="@string/cats"/>
     <item
         android:id="@+id/navFavourites"
         android:enabled="true"
-        android:icon="@drawable/favourite_icon"/>
+        android:icon="@drawable/favourite_icon"
+        android:title="@string/favourites_title"/>
 
     <item
         android:id="@+id/navAccount"
         android:enabled="true"
-        android:icon="@drawable/account_icon"/>
+        android:icon="@drawable/account_icon"
+        android:title="@string/account"/>
 </menu>

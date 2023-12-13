@@ -22,6 +22,7 @@ import com.catapi.c4.data.ListCatResponse;
 
 public class Utils {
 
+    public static Context context;
     private static WindowManager windowManager;
     private static View myView;
 
@@ -56,7 +57,7 @@ public class Utils {
 
         windowManager = (WindowManager) context.getApplicationContext().getSystemService(WINDOW_SERVICE);
         LayoutInflater inflater = (LayoutInflater) context.getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
-        myView = inflater.inflate(R.layout.cat_description, null);
+//        myView = inflater.inflate(R.layout.cat_description, null);
         windowManager.addView(myView, params);
         TextView catName = myView.findViewById(R.id.tvCatName);
         TextView description = myView.findViewById(R.id.tvDescription);

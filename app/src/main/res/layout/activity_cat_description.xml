@@ -69,7 +69,7 @@
                         android:layout_margin="10dp"
                         android:gravity="center|start"
                         android:text="@string/description"
-                        android:textColor="@color/textColorNotNight"
+                        android:textColor="@color/textColorLightTheme"
                         android:textSize="15sp" />
 
                     <TextView
@@ -79,7 +79,7 @@
                         android:layout_margin="10dp"
                         android:gravity="center|start"
                         android:text="@string/temperament"
-                        android:textColor="@color/textColorNotNight"
+                        android:textColor="@color/textColorLightTheme"
                         android:textSize="15sp" />
 
                     <LinearLayout
@@ -108,7 +108,7 @@
                             android:layout_weight="1"
                             android:gravity="center|start"
                             android:text="@string/default_description"
-                            android:textColor="@color/textColorNotNight"
+                            android:textColor="@color/textColorLightTheme"
                             android:textSize="15sp" />
 
                     </LinearLayout>
@@ -139,7 +139,7 @@
                             android:layout_weight="1"
                             android:gravity="center|start"
                             android:text="@string/default_description"
-                            android:textColor="@color/textColorNotNight"
+                            android:textColor="@color/textColorLightTheme"
                             android:textSize="15sp" />
 
                     </LinearLayout>
@@ -169,7 +169,7 @@
                             android:layout_weight="1"
                             android:gravity="center|start"
                             android:text="@string/default_description"
-                            android:textColor="@color/textColorNotNight"
+                            android:textColor="@color/textColorLightTheme"
                             android:textSize="15sp" />
 
                     </LinearLayout>
@@ -215,7 +215,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/adaptability"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -246,7 +246,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/social_needs"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -277,7 +277,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/health_issues"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -308,7 +308,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/shedding_level"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -339,7 +339,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/intelligence"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -370,7 +370,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/affectionate"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -409,7 +409,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/energy_level"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -440,7 +440,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/dog_friendly"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -470,7 +470,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/stranger_friendly"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -501,7 +501,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/child_friendly"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -532,7 +532,7 @@
                                     android:layout_weight="1"
                                     android:gravity="center|start"
                                     android:text="@string/grooming"
-                                    android:textColor="@color/textColorNotNight"
+                                    android:textColor="@color/textColorLightTheme"
                                     android:textSize="13sp" />
 
                                 <RatingBar
@@ -575,9 +575,10 @@
                             android:layout_height="wrap_content"
                             android:layout_margin="10dp"
                             android:layout_weight="1"
+                            android:autoLink="web"
                             android:gravity="center|start"
                             android:text="@string/default_description"
-                            android:textColor="@color/textColorNotNight"
+                            android:textColor="@color/textColorLightTheme"
                             android:textSize="15sp" />
 
                     </LinearLayout>

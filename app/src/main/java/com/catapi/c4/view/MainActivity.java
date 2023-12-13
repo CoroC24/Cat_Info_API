@@ -1,53 +1,29 @@
 package com.catapi.c4.view;
 
-import androidx.annotation.NonNull;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.widget.Toast;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
-import android.os.Bundle;
-import android.os.Handler;
-import android.provider.Settings;
-import android.util.Log;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.Toast;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.catapi.c4.R;
-import com.catapi.c4.data.InfoCatResponse;
-import com.catapi.c4.data.ListCatResponse;
-import com.catapi.c4.data.remote.ApiService;
-import com.catapi.c4.data.remote.ApiUtils;
 import com.catapi.c4.model.Utils;
-import com.catapi.c4.view.adapter.AnswersAdapter;
-import com.google.android.material.appbar.MaterialToolbar;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AnswersAdapter answersAdapter;
-    private RecyclerView recyclerView;
-    private ApiService apiService;
-    private SwipeRefreshLayout swipeRefresh;
-    private LinearLayout noInternetLayout;
     private DrawerLayout drawerLayout;
-    private MaterialToolbar topAppBar;
-    private NavigationView navigationView;
+    private Fragment fragmentVisible;
+    private int animIn, animOut;
+    private final Fragment[] fragments = new Fragment[]{new MainFragment(), new FavouritesFragment(), new AccountFragment()};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,35 +32,63 @@ public class MainActivity extends AppCompatActivity {
 
         checkOverlayPermission();
 
-        swipeRefresh = findViewById(R.id.swipeRefresh);
-        noInternetLayout = findViewById(R.id.layoutNoInternet);
-        drawerLayout = findViewById(R.id.drawerLayout);
-        navigationView = findViewById(R.id.navigationView);
-        recyclerView = findViewById(R.id.layoutRecyclerView);
-        topAppBar = findViewById(R.id.topAppBar);
-        apiService = ApiUtils.getApiService();
-        answersAdapter = new AnswersAdapter(this, new ArrayList<>(0), new AnswersAdapter.OnItemClickListener() {
-            @Override
-            public void onPostClick(ListCatResponse data) {
-                getCatInfo(data.getId());
+        Utils.context = getApplicationContext();
+        NavigationView navigationView = findViewById(R.id.navigationView);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
+        drawerLayout = findViewById(R.id.drawer_layout);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragments[0])
+                .commit();
+
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, fragments[1], "favouritesFragment").hide(fragments[1])
+                .add(R.id.fragment_container, fragments[2], "accountFragment").hide(fragments[2])
+                .commit();
+
+        fragmentVisible = fragments[0];
+
+        bottomNavigationView.setSelectedItemId(R.id.navCat);
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            Fragment fragment = null;
+
+            if (item.getItemId() == R.id.navCat) {
+                fragment = fragments[0];
+            } else if (item.getItemId() == R.id.navFavourites) {
+                fragment = fragments[1];
+            } else if (item.getItemId() == R.id.navAccount) {
+                fragment = fragments[2];
             }
-        });
 
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(this, 2);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(answersAdapter);
-        recyclerView.setHasFixedSize(true);
+            if (fragment != null) {
+                if (fragmentVisible instanceof MainFragment) {
+                    animIn = R.anim.slide_in_right;
+                    animOut = R.anim.slide_out_left;
+                } else if (fragmentVisible instanceof AccountFragment) {
+                    animIn = android.R.anim.slide_in_left;
+                    animOut = android.R.anim.slide_out_right;
+                } else if (fragmentVisible instanceof FavouritesFragment && fragment instanceof MainFragment) {
+                    animIn = android.R.anim.slide_in_left;
+                    animOut = android.R.anim.slide_out_right;
+                } else if (fragmentVisible instanceof FavouritesFragment && fragment instanceof AccountFragment) {
+                    animIn = R.anim.slide_in_right;
+                    animOut = R.anim.slide_out_left;
+                }
 
-        if (!Utils.checkInternetConnection(getApplicationContext()) && noInternetLayout != null && recyclerView != null) {
-            noInternetLayout.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        }
+                getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                        .setCustomAnimations(animIn, animOut)
+                        .hide(fragments[0])
+                        .hide(fragments[1])
+                        .hide(fragments[2])
+                        .show(fragment)
+                        .commit();
 
-        loadData();
-        swipeRefresh();
+                fragmentVisible = fragment;
+            }
 
-        topAppBar.setNavigationOnClickListener(view -> {
-            drawerLayout.open();
+            return true;
         });
 
         navigationView.setNavigationItemSelectedListener(item -> {
@@ -113,60 +117,5 @@ public class MainActivity extends AppCompatActivity {
                     Uri.parse("package:" + getPackageName()));
             startActivityForResult(intent, 1234);
         }
-    }
-
-    private void swipeRefresh() {
-        swipeRefresh.setColorSchemeColors(Color.parseColor("#00B3FF"), Color.parseColor("#007DFE"));
-        swipeRefresh.setOnRefreshListener(this::loadData);
-    }
-
-    public void loadData() {
-        if (!Utils.checkInternetConnection(getApplicationContext()) && noInternetLayout != null && recyclerView != null) {
-            noInternetLayout.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-            swipeRefresh.setRefreshing(false);
-            return;
-        } else {
-            if (noInternetLayout != null && recyclerView != null) {
-                noInternetLayout.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
-            }
-        }
-
-        apiService.getAnswers(ApiUtils.API_KEY).enqueue(new Callback<List<ListCatResponse>>() {
-            @Override
-            public void onResponse(Call<List<ListCatResponse>> call, Response<List<ListCatResponse>> response) {
-                if (response.isSuccessful()) {
-                    answersAdapter.updateAnswersCats(response.body());
-                    swipeRefresh.setRefreshing(false);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<ListCatResponse>> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Nada papa - " + t, Toast.LENGTH_SHORT).show();
-                Log.e("Totiao", String.valueOf(t));
-                swipeRefresh.setRefreshing(false);
-            }
-        });
-    }
-
-    public void getCatInfo(String id) {
-        apiService.getAnswers(ApiUtils.API_KEY, id).enqueue(new Callback<InfoCatResponse>() {
-            @Override
-            public void onResponse(Call<InfoCatResponse> call, Response<InfoCatResponse> response) {
-                if (response.isSuccessful()) {
-                    Utils.infoCatResponse = response.body();
-                    Intent intent = new Intent(MainActivity.this, CatDescription.class);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<InfoCatResponse> call, Throwable t) {
-                Toast.makeText(MainActivity.this, "Nada papa - " + t, Toast.LENGTH_SHORT).show();
-                Log.e("Totiao", String.valueOf(t));
-            }
-        });
     }
 }

@@ -34,4 +34,5 @@
     <string name="header_title">Options</string>
     <string name="header_text">Select an option</string>
     <string name="cats">Cats</string>
+    <string name="search_bar">Search by cat\'s name</string>
 </resources>
