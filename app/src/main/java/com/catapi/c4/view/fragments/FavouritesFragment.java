@@ -1,4 +1,4 @@
-package com.catapi.c4.view;
+package com.catapi.c4.view.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

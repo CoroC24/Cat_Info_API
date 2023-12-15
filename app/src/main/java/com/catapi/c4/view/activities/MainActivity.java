@@ -1,4 +1,4 @@
-package com.catapi.c4.view;
+package com.catapi.c4.view.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -14,6 +14,9 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.catapi.c4.R;
 import com.catapi.c4.model.Utils;
+import com.catapi.c4.view.fragments.AccountFragment;
+import com.catapi.c4.view.fragments.FavouritesFragment;
+import com.catapi.c4.view.fragments.MainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 

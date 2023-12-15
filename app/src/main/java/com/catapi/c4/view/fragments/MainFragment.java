@@ -1,4 +1,4 @@
-package com.catapi.c4.view;
+package com.catapi.c4.view.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -24,6 +23,7 @@ import com.catapi.c4.data.ListCatResponse;
 import com.catapi.c4.data.remote.ApiService;
 import com.catapi.c4.data.remote.ApiUtils;
 import com.catapi.c4.model.Utils;
+import com.catapi.c4.view.activities.CatDescription;
 import com.catapi.c4.view.adapter.AnswersAdapter;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.search.SearchBar;
@@ -31,7 +31,6 @@ import com.google.android.material.search.SearchView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;

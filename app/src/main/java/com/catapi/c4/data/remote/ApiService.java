@@ -12,9 +12,6 @@ import retrofit2.http.Path;
 
 public interface ApiService {
 
-    @GET("images/search")
-    Call<List<ListCatResponse>> getAnswers();
-
     @GET("images/search?limit=50&has_breeds=1")
     Call<List<ListCatResponse>> getAnswers(@Header("x-api-key") String apiKey);
 

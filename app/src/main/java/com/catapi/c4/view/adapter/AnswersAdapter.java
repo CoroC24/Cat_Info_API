@@ -62,12 +62,6 @@ public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHold
         ListCatResponse data = this.data.get(position);
         String imageUrl = data.getUrl();
 
-        /*RequestOptions options = new RequestOptions()
-                .fitCenter()
-                .override(holder.image.getWidth(), holder.image.getHeight());
-
-        Glide.with(context).load(imageUrl).apply(options).into(holder.image);*/
-
         Picasso.get().load(imageUrl).centerCrop().resize(500, 500).into(holder.image);
     }
 

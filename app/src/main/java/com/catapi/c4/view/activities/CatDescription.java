@@ -1,4 +1,4 @@
-package com.catapi.c4.view;
+package com.catapi.c4.view.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -55,9 +55,6 @@ public class CatDescription extends AppCompatActivity {
         infoCatResponse = Utils.infoCatResponse;
         getBreedsInfo(infoCatResponse.getBreeds());
         setBreedsInfo();
-
-        /*RequestOptions options = new RequestOptions().fitCenter().override(catImage.getWidth(), catImage.getHeight());
-        Glide.with(getApplicationContext()).load(infoCatResponse.getUrl()).apply(options).into(catImage);*/
     }
 
     public void getBreedsInfo(List<Breeds> breedsInfo) {
