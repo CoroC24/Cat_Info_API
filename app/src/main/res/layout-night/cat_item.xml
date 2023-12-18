@@ -10,15 +10,14 @@
     android:focusable="true"
     android:orientation="horizontal"
     app:cardCornerRadius="10dp"
-    app:cardElevation="50dp"
+    app:cardElevation="5dp"
     app:strokeColor="@color/backgroundColorNightTheme">
 
     <ImageView
         android:id="@+id/imgCatList"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:backgroundTint="@color/backgroundColorNightTheme"
+        android:layout_height="160dp"
         android:contentDescription="@string/cat_image"
-        android:src="@drawable/ic_launcher_foreground" />
+        android:src="@android:drawable/stat_notify_sync" />
 
 </com.google.android.material.card.MaterialCardView>

@@ -2,7 +2,7 @@
     <item
         android:id="@+id/navCat"
         android:enabled="true"
-        android:icon="@drawable/bottom_navigation_cat_icon"
+        android:icon="@drawable/night_bottom_navigation_cat_icon"
         android:title="@string/cats"/>
     <item
         android:id="@+id/navFavourites"
@@ -13,6 +13,6 @@
     <item
         android:id="@+id/navAccount"
         android:enabled="true"
-        android:icon="@drawable/bottom_navigation_account_icon"
+        android:icon="@drawable/night_bottom_navigation_account_icon"
         android:title="@string/account"/>
 </menu>

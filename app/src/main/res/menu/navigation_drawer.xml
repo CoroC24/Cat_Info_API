@@ -3,6 +3,6 @@
     <item
         android:id="@+id/favourites_item"
         android:checkable="true"
-        android:icon="@drawable/favourite_icon"
+        android:icon="@drawable/ic_favourite_black"
         android:title="@string/favourites_title" />
 </menu>

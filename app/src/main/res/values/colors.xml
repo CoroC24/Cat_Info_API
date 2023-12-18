@@ -2,7 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="backgroundColorLightTheme">#FFEDEDED</color>
+    <color name="backgroundColorLightTheme">#FFFAFAFA</color>
     <color name="backgroundColorNightTheme">#252525</color>
     <color name="textColorLightTheme">#3F3F3F</color>
     <color name="textColorNightTheme">#D6D6D6</color>

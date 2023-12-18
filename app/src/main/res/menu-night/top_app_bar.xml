@@ -9,7 +9,7 @@
 
     <item
         android:id="@+id/account"
-        android:icon="@drawable/account_icon_white"
+        android:icon="@drawable/ic_account_white"
         android:title="@string/account"
         android:contentDescription="@string/account"
         app:showAsAction="ifRoom" />

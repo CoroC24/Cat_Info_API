@@ -21,7 +21,7 @@
             android:minHeight="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationContentDescription="Navigation Menu"
-            app:navigationIcon="@drawable/menu_icon_white" />
+            app:navigationIcon="@drawable/ic_menu_white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -43,6 +43,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_indicator"
+                style="@style/Widget.Material3.LinearProgressIndicator"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/backgroundColorLightTheme"
+                android:indeterminate="true"
+                app:showAnimationBehavior="inward" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/layoutRecyclerView"
@@ -66,7 +75,7 @@
                     android:layout_width="125dp"
                     android:layout_height="125dp"
                     android:contentDescription="@string/default_description"
-                    android:src="@drawable/no_wifi_white" />
+                    android:src="@drawable/ic_no_wifi_white" />
 
                 <TextView
                     android:layout_width="match_parent"

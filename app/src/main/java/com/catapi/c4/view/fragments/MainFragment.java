@@ -26,6 +26,7 @@ import com.catapi.c4.model.Utils;
 import com.catapi.c4.view.activities.CatDescription;
 import com.catapi.c4.view.adapter.AnswersAdapter;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.search.SearchView;
 
@@ -48,6 +49,7 @@ public class MainFragment extends Fragment {
     private NavigationView navigationView;
     private SearchBar searchBar;
     private SearchView searchView;
+    private LinearProgressIndicator progressIndicator;
 
     public MainFragment() {}
 
@@ -63,6 +65,7 @@ public class MainFragment extends Fragment {
         recyclerView = viewLayout.findViewById(R.id.layoutRecyclerView);
         searchBar = viewLayout.findViewById(R.id.search_bar);
         searchView = viewLayout.findViewById(R.id.search_view);
+        progressIndicator = viewLayout.findViewById(R.id.progress_indicator);
         apiService = ApiUtils.getApiService();
 
         answersAdapter = new AnswersAdapter(context, new ArrayList<>(0), new AnswersAdapter.OnItemClickListener() {
@@ -77,9 +80,13 @@ public class MainFragment extends Fragment {
         recyclerView.setAdapter(answersAdapter);
         recyclerView.setHasFixedSize(true);
 
+        progressIndicator.show();
+
         if (!Utils.checkInternetConnection(context) && noInternetLayout != null && recyclerView != null) {
             noInternetLayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
+            progressIndicator.setVisibility(View.GONE);
+            progressIndicator.hide();
         }
 
         loadData();
@@ -102,6 +109,8 @@ public class MainFragment extends Fragment {
             noInternetLayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
             swipeRefresh.setRefreshing(false);
+            progressIndicator.hide();
+            progressIndicator.setVisibility(View.GONE);
             return;
         } else {
             if (noInternetLayout != null && recyclerView != null) {
@@ -115,6 +124,8 @@ public class MainFragment extends Fragment {
             public void onResponse(Call<List<ListCatResponse>> call, Response<List<ListCatResponse>> response) {
                 if (response.isSuccessful()) {
                     answersAdapter.updateAnswersCats(response.body());
+                    progressIndicator.hide();
+                    progressIndicator.setVisibility(View.GONE);
                     swipeRefresh.setRefreshing(false);
                 }
             }
@@ -123,12 +134,16 @@ public class MainFragment extends Fragment {
             public void onFailure(Call<List<ListCatResponse>> call, Throwable t) {
                 Toast.makeText(context, "Nada papa - " + t, Toast.LENGTH_SHORT).show();
                 Log.e("Totiao", String.valueOf(t));
+                progressIndicator.hide();
+                progressIndicator.setVisibility(View.GONE);
                 swipeRefresh.setRefreshing(false);
             }
         });
     }
 
     public void getCatInfo(String id) {
+        progressIndicator.setVisibility(View.VISIBLE);
+        progressIndicator.show();
         apiService.getAnswers(ApiUtils.API_KEY, id).enqueue(new Callback<InfoCatResponse>() {
             @Override
             public void onResponse(Call<InfoCatResponse> call, Response<InfoCatResponse> response) {
@@ -136,6 +151,8 @@ public class MainFragment extends Fragment {
                     Utils.infoCatResponse = response.body();
                     Intent intent = new Intent(context, CatDescription.class);
                     startActivity(intent);
+                    progressIndicator.hide();
+                    progressIndicator.setVisibility(View.GONE);
                 }
             }
 
@@ -143,6 +160,8 @@ public class MainFragment extends Fragment {
             public void onFailure(Call<InfoCatResponse> call, Throwable t) {
                 Toast.makeText(context, "Nada papa - " + t, Toast.LENGTH_SHORT).show();
                 Log.e("Totiao", String.valueOf(t));
+                progressIndicator.hide();
+                progressIndicator.setVisibility(View.GONE);
             }
         });
     }

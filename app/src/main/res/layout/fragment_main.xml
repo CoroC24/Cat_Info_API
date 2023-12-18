@@ -11,6 +11,7 @@
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:backgroundTint="@color/backgroundColorLightTheme"
         app:liftOnScroll="true">
 
         <com.google.android.material.search.SearchBar
@@ -21,7 +22,7 @@
             android:minHeight="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationContentDescription="Navigation Menu"
-            app:navigationIcon="@drawable/menu_icon_white" />
+            app:navigationIcon="@drawable/ic_menu_white" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -32,34 +33,36 @@
         android:hint="@string/search_bar"
         app:layout_anchor="@id/search_bar" />
 
-    <com.google.android.material.progressindicator.LinearProgressIndicator
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:indeterminate="true" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:backgroundTint="@color/backgroundColorLightTheme"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/backgroundColorLightTheme"
+            android:backgroundTint="@color/backgroundColorLightTheme"
+            android:gravity="center"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/layoutRecyclerView"
+            <com.google.android.material.progressindicator.LinearProgressIndicator
+                android:id="@+id/progress_indicator"
+                style="@style/Widget.Material3.LinearProgressIndicator"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:overScrollMode="never"
-                android:visibility="visible"
-                tools:listitem="@layout/cat_item" />
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/backgroundColorLightTheme"
+                android:indeterminate="true"
+                app:showAnimationBehavior="outward" />
 
             <LinearLayout
                 android:id="@+id/layoutNoInternet"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:backgroundTint="@color/backgroundColorLightTheme"
                 android:gravity="center"
                 android:orientation="vertical"
                 android:visibility="gone">
@@ -69,7 +72,7 @@
                     android:layout_width="125dp"
                     android:layout_height="125dp"
                     android:contentDescription="@string/default_description"
-                    android:src="@drawable/no_wifi_white" />
+                    android:src="@drawable/ic_no_wifi_black" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -80,6 +83,17 @@
                     android:textSize="18sp" />
 
             </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/layoutRecyclerView"
+                style="@style/Theme.Material3.Light"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/backgroundColorLightTheme"
+                android:backgroundTint="@color/backgroundColorLightTheme"
+                android:overScrollMode="never"
+                android:visibility="visible"
+                tools:listitem="@layout/cat_item" />
 
         </LinearLayout>
 
