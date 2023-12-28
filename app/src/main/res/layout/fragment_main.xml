@@ -22,7 +22,7 @@
             android:minHeight="?attr/actionBarSize"
             app:layout_scrollFlags="scroll|enterAlways"
             app:navigationContentDescription="Navigation Menu"
-            app:navigationIcon="@drawable/ic_menu_white" />
+            app:navigationIcon="@drawable/ic_menu_black" />
 
     </com.google.android.material.appbar.AppBarLayout>
 

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "261696809952",
+    "project_id": "catinfo-api-c4",
+    "storage_bucket": "catinfo-api-c4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:261696809952:android:f0ce2ac27744a664d5d985",
+        "android_client_info": {
+          "package_name": "com.catapi.c4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCQbetiatyIA8ktm7axwn7PYxDXrkyUQF8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

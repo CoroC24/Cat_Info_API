@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -18,17 +19,23 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.catapi.c4.R;
+import com.catapi.c4.data.AddFavouritesResponse;
 import com.catapi.c4.data.InfoCatResponse;
 import com.catapi.c4.data.ListCatResponse;
+import com.catapi.c4.data.ListFavouritesResponse;
 import com.catapi.c4.data.remote.ApiService;
 import com.catapi.c4.data.remote.ApiUtils;
+import com.catapi.c4.model.AddFavouritesData;
 import com.catapi.c4.model.Utils;
 import com.catapi.c4.view.activities.CatDescription;
 import com.catapi.c4.view.adapter.AnswersAdapter;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.android.material.search.SearchBar;
 import com.google.android.material.search.SearchView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,8 +57,12 @@ public class MainFragment extends Fragment {
     private SearchBar searchBar;
     private SearchView searchView;
     private LinearProgressIndicator progressIndicator;
+    private MaterialCardView cardView;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
 
-    public MainFragment() {}
+    public MainFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
@@ -68,12 +79,7 @@ public class MainFragment extends Fragment {
         progressIndicator = viewLayout.findViewById(R.id.progress_indicator);
         apiService = ApiUtils.getApiService();
 
-        answersAdapter = new AnswersAdapter(context, new ArrayList<>(0), new AnswersAdapter.OnItemClickListener() {
-            @Override
-            public void onPostClick(ListCatResponse data) {
-                getCatInfo(data.getId());
-            }
-        });
+        answersAdapter = new AnswersAdapter(context, new ArrayList<>(0), data -> getCatInfo(data.getId()));
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 2);
         recyclerView.setLayoutManager(layoutManager);
@@ -89,14 +95,26 @@ public class MainFragment extends Fragment {
             progressIndicator.hide();
         }
 
-        loadData();
-        swipeRefresh();
-
         searchBar.setNavigationOnClickListener(view -> {
             if (drawerLayout != null) drawerLayout.open();
         });
 
+        /*cardView.setOnLongClickListener(view -> {
+            addFavourites();
+            return false;
+        });*/
+
+        loadData();
+        swipeRefresh();
+
         return viewLayout;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
     }
 
     private void swipeRefresh() {
@@ -104,7 +122,7 @@ public class MainFragment extends Fragment {
         swipeRefresh.setOnRefreshListener(this::loadData);
     }
 
-    public void loadData() {
+    private void loadData() {
         if (!Utils.checkInternetConnection(context) && noInternetLayout != null && recyclerView != null) {
             noInternetLayout.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
@@ -121,7 +139,7 @@ public class MainFragment extends Fragment {
 
         apiService.getAnswers(ApiUtils.API_KEY).enqueue(new Callback<List<ListCatResponse>>() {
             @Override
-            public void onResponse(Call<List<ListCatResponse>> call, Response<List<ListCatResponse>> response) {
+            public void onResponse(@NonNull Call<List<ListCatResponse>> call, @NonNull Response<List<ListCatResponse>> response) {
                 if (response.isSuccessful()) {
                     answersAdapter.updateAnswersCats(response.body());
                     progressIndicator.hide();
@@ -131,7 +149,7 @@ public class MainFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<ListCatResponse>> call, Throwable t) {
+            public void onFailure(@NonNull Call<List<ListCatResponse>> call, @NonNull Throwable t) {
                 Toast.makeText(context, "Nada papa - " + t, Toast.LENGTH_SHORT).show();
                 Log.e("Totiao", String.valueOf(t));
                 progressIndicator.hide();
@@ -141,12 +159,12 @@ public class MainFragment extends Fragment {
         });
     }
 
-    public void getCatInfo(String id) {
+    private void getCatInfo(String id) {
         progressIndicator.setVisibility(View.VISIBLE);
         progressIndicator.show();
         apiService.getAnswers(ApiUtils.API_KEY, id).enqueue(new Callback<InfoCatResponse>() {
             @Override
-            public void onResponse(Call<InfoCatResponse> call, Response<InfoCatResponse> response) {
+            public void onResponse(@NonNull Call<InfoCatResponse> call, @NonNull Response<InfoCatResponse> response) {
                 if (response.isSuccessful()) {
                     Utils.infoCatResponse = response.body();
                     Intent intent = new Intent(context, CatDescription.class);
@@ -157,7 +175,7 @@ public class MainFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<InfoCatResponse> call, Throwable t) {
+            public void onFailure(@NonNull Call<InfoCatResponse> call, @NonNull Throwable t) {
                 Toast.makeText(context, "Nada papa - " + t, Toast.LENGTH_SHORT).show();
                 Log.e("Totiao", String.valueOf(t));
                 progressIndicator.hide();

@@ -1,19 +1,35 @@
 package com.catapi.c4.view.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.catapi.c4.R;
+import com.catapi.c4.data.AddFavouritesResponse;
 import com.catapi.c4.data.InfoCatResponse;
+import com.catapi.c4.data.remote.ApiService;
+import com.catapi.c4.data.remote.ApiUtils;
+import com.catapi.c4.model.AddFavouritesData;
 import com.catapi.c4.model.Breeds;
 import com.catapi.c4.model.Utils;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class CatDescription extends AppCompatActivity {
 
@@ -24,6 +40,10 @@ public class CatDescription extends AppCompatActivity {
     private String catName, catDesc, catTemperament, catOrigin, catLifeSpan, catWeight, wikipediaUrl;
     private int catAdaptability, catSocialNeeds, catHealthIssues, catSheddingLevel, catIntelligence, catAffectionate, catEnergyLevel,
             catDogFriendly, catStrangerFriendly, catChildFriendly, catGrooming;
+    private ImageButton favouritesButton;
+    private ApiService apiService;
+    private FirebaseAuth mAuth;
+    private FirebaseUser currentUser;
 
     private InfoCatResponse infoCatResponse;
 
@@ -31,6 +51,8 @@ public class CatDescription extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cat_description);
+
+        mAuth = FirebaseAuth.getInstance();
 
         catImage = findViewById(R.id.imgCat);
         tvCatName = findViewById(R.id.tvCatName);
@@ -51,10 +73,20 @@ public class CatDescription extends AppCompatActivity {
         ratingBarStrangerFriendly = findViewById(R.id.ratingStrangerFriendly);
         ratingBarChildFriendly = findViewById(R.id.ratingChildFriendly);
         ratingBarGrooming = findViewById(R.id.ratingGrooming);
+        favouritesButton = findViewById(R.id.add_favourites_button);
+        apiService = ApiUtils.getApiService();
 
         infoCatResponse = Utils.infoCatResponse;
         getBreedsInfo(infoCatResponse.getBreeds());
         setBreedsInfo();
+
+        favouritesButton.setOnClickListener(view -> addFavourites());
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        currentUser = mAuth.getCurrentUser();
     }
 
     public void getBreedsInfo(List<Breeds> breedsInfo) {
@@ -102,5 +134,30 @@ public class CatDescription extends AppCompatActivity {
         ratingBarStrangerFriendly.setRating(catStrangerFriendly);
         ratingBarChildFriendly.setRating(catChildFriendly);
         ratingBarGrooming.setRating(catGrooming);
+    }
+
+    private void addFavourites() {
+        if (currentUser == null) {
+            Snackbar.make(findViewById(android.R.id.content), "Log in to your account to add to favourites", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+        AddFavouritesData favouritesData = new AddFavouritesData();
+        favouritesData.setImageId(Utils.infoCatResponse.getId());
+        favouritesData.setSubId(currentUser.getUid());
+        apiService.addFavourites(ApiUtils.API_KEY, favouritesData).enqueue(new Callback<AddFavouritesResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<AddFavouritesResponse> call, @NonNull Response<AddFavouritesResponse> response) {
+                if (response.isSuccessful()) {
+                    Snackbar.make(findViewById(android.R.id.content), "Cat added to favourites", Snackbar.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<AddFavouritesResponse> call, @NonNull Throwable t) {
+                Toast.makeText(getApplicationContext(), "Nada papa - " + t, Toast.LENGTH_SHORT).show();
+                Log.e("Totiao", String.valueOf(t));
+            }
+        });
     }
 }

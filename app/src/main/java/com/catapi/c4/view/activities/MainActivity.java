@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,35 +14,40 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.catapi.c4.R;
+import com.catapi.c4.databinding.ActivityMainBinding;
 import com.catapi.c4.model.Utils;
 import com.catapi.c4.view.fragments.AccountFragment;
 import com.catapi.c4.view.fragments.FavouritesFragment;
 import com.catapi.c4.view.fragments.MainFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity {
 
-    private DrawerLayout drawerLayout;
+    private ActivityMainBinding mainBinding;
     private Fragment fragmentVisible;
     private int animIn, animOut;
     private final Fragment[] fragments = new Fragment[]{new MainFragment(), new FavouritesFragment(), new AccountFragment()};
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
+        View rootView = mainBinding.getRoot();
+        setContentView(rootView);
 
         checkOverlayPermission();
 
+        mAuth = FirebaseAuth.getInstance();
+
         Utils.context = getApplicationContext();
-        NavigationView navigationView = findViewById(R.id.navigationView);
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
-        drawerLayout = findViewById(R.id.drawer_layout);
 
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, fragments[0])
+                .replace(R.id.fragment_container, fragments[0], "mainFragment")
                 .commit();
 
         getSupportFragmentManager().beginTransaction()
@@ -51,53 +57,31 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentVisible = fragments[0];
 
-        bottomNavigationView.setSelectedItemId(R.id.navCat);
+        setBottomMenuItem(R.id.navCat);
 
-        bottomNavigationView.setOnItemSelectedListener(item -> {
-            Fragment fragment = null;
-
-            if (item.getItemId() == R.id.navCat) {
-                fragment = fragments[0];
-            } else if (item.getItemId() == R.id.navFavourites) {
-                fragment = fragments[1];
-            } else if (item.getItemId() == R.id.navAccount) {
-                fragment = fragments[2];
-            }
-
-            if (fragment != null) {
-                if (fragmentVisible instanceof MainFragment) {
-                    animIn = R.anim.slide_in_right;
-                    animOut = R.anim.slide_out_left;
-                } else if (fragmentVisible instanceof AccountFragment) {
-                    animIn = android.R.anim.slide_in_left;
-                    animOut = android.R.anim.slide_out_right;
-                } else if (fragmentVisible instanceof FavouritesFragment && fragment instanceof MainFragment) {
-                    animIn = android.R.anim.slide_in_left;
-                    animOut = android.R.anim.slide_out_right;
-                } else if (fragmentVisible instanceof FavouritesFragment && fragment instanceof AccountFragment) {
-                    animIn = R.anim.slide_in_right;
-                    animOut = R.anim.slide_out_left;
-                }
-
-                getSupportFragmentManager().beginTransaction()
-                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
-                        .setCustomAnimations(animIn, animOut)
-                        .hide(fragments[0])
-                        .hide(fragments[1])
-                        .hide(fragments[2])
-                        .show(fragment)
-                        .commit();
-
-                fragmentVisible = fragment;
-            }
-
+        mainBinding.bottomNavigation.setOnItemSelectedListener(item -> {
+            switchFragments(item.getItemId());
             return true;
         });
 
-        navigationView.setNavigationItemSelectedListener(item -> {
-            drawerLayout.close();
+        mainBinding.navigationView.setNavigationItemSelectedListener(item -> {
+            if (item.getItemId() == R.id.favourites_item) {
+                switchFragments(item.getItemId());
+            } else if (item.getItemId() == R.id.logout_item) {
+                mAuth.signOut();
+            }
+
+            setBottomMenuItem(item.getItemId());
+            mainBinding.drawerLayout.close();
             return false;
         });
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        Utils.loggedUser = mAuth.getCurrentUser();
     }
 
     @Override
@@ -106,9 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (requestCode == 1234) {
             if (Settings.canDrawOverlays(this)) {
-                Toast.makeText(this, "PERMISO SUPERPOSICIÓN ACTIVADO", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "OVERLAY PERMISSION ENABLED", Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(this, "PERMISO SUPERPOSICIÓN INACTIVO", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, "OVERLAY PERMISSION INACTIVE", Toast.LENGTH_LONG).show();
                 checkOverlayPermission();
             }
         }
@@ -120,5 +104,48 @@ public class MainActivity extends AppCompatActivity {
                     Uri.parse("package:" + getPackageName()));
             startActivityForResult(intent, 1234);
         }
+    }
+
+    private void switchFragments(int itemId) {
+        Fragment fragment = null;
+
+        if (itemId == R.id.navCat) {
+            fragment = fragments[0];
+        } else if (itemId == R.id.navFavourites || itemId == R.id.favourites_item) {
+            fragment = fragments[1];
+        } else if (itemId == R.id.navAccount) {
+            fragment = fragments[2];
+        }
+
+        if (fragment != null) {
+            if (fragmentVisible instanceof MainFragment) {
+                animIn = R.anim.slide_in_right;
+                animOut = R.anim.slide_out_left;
+            } else if (fragmentVisible instanceof AccountFragment) {
+                animIn = android.R.anim.slide_in_left;
+                animOut = android.R.anim.slide_out_right;
+            } else if (fragmentVisible instanceof FavouritesFragment && fragment instanceof MainFragment) {
+                animIn = android.R.anim.slide_in_left;
+                animOut = android.R.anim.slide_out_right;
+            } else if (fragmentVisible instanceof FavouritesFragment && fragment instanceof AccountFragment) {
+                animIn = R.anim.slide_in_right;
+                animOut = R.anim.slide_out_left;
+            }
+
+            getSupportFragmentManager().beginTransaction()
+                    .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE)
+                    .setCustomAnimations(animIn, animOut)
+                    .hide(fragments[0])
+                    .hide(fragments[1])
+                    .hide(fragments[2])
+                    .show(fragment)
+                    .commit();
+
+            fragmentVisible = fragment;
+        }
+    }
+
+    private void setBottomMenuItem(int itemId) {
+        mainBinding.bottomNavigation.setSelectedItemId(itemId);
     }
 }
