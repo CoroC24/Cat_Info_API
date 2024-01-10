@@ -37,30 +37,22 @@ public class SignInFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentSigninBinding.inflate(inflater, container, false);
 
         mAuth = FirebaseAuth.getInstance();
 
         setDataEntered();
 
-        binding.signInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (validateData()) {
-                    signInAccount(email, pass);
-                }
+        binding.signInButton.setOnClickListener(view -> {
+            if (validateData()) {
+                signInAccount(email, pass);
             }
         });
 
-        binding.signUpClickableText.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                requireActivity().getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container_auth, new SignUpFragment(), "signUpFragment")
-                        .commit();
-            }
-        });
+        binding.signUpClickableText.setOnClickListener(view -> requireActivity().getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container_auth, new SignUpFragment(), "signUpFragment")
+                .commit());
 
         return binding.getRoot();
     }

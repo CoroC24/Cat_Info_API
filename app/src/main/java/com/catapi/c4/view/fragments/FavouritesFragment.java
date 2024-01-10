@@ -17,14 +17,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.catapi.c4.R;
-import com.catapi.c4.data.InfoCatResponse;
 import com.catapi.c4.data.ListFavouritesResponse;
 import com.catapi.c4.data.remote.ApiService;
 import com.catapi.c4.data.remote.ApiUtils;
 import com.catapi.c4.databinding.FragmentFavouritesBinding;
 import com.catapi.c4.model.Utils;
 import com.catapi.c4.view.activities.AuthActivity;
-import com.catapi.c4.view.activities.CatDescription;
 import com.catapi.c4.view.adapter.AnswersFavouritesAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -51,10 +49,10 @@ public class FavouritesFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentFavouritesBinding.inflate(inflater, container, false);
 
-        this.context = Utils.context;
+        context = Utils.context;
         mAuth = FirebaseAuth.getInstance();
         apiService = ApiUtils.getApiService();
         drawerLayout = requireActivity().findViewById(R.id.drawer_layout);
@@ -64,7 +62,12 @@ public class FavouritesFragment extends Fragment {
             startActivity(intent);
         });
 
-        answersFavouritesAdapter = new AnswersFavouritesAdapter(context, new ArrayList<>(0), data -> getCatInfo(data.getImageId()));
+        answersFavouritesAdapter = new AnswersFavouritesAdapter(context, new ArrayList<>(0), data -> {
+            binding.progressIndicatorFavourites.setVisibility(View.VISIBLE);
+            binding.progressIndicatorFavourites.show();
+
+            Utils.getCatInfo(data.getImageId(), binding.progressIndicatorFavourites);
+        });
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(context, 2);
         binding.layoutRecyclerViewFavourites.setLayoutManager(layoutManager);
@@ -117,10 +120,10 @@ public class FavouritesFragment extends Fragment {
         binding.swipeRefreshFavourites.setOnRefreshListener(this::loadFavouritesData);
     }
 
-    private void loadFavouritesData() {
-        currentUser = mAuth.getCurrentUser();
+    public void loadFavouritesData() {
+        currentUser = Utils.loggedUser;
 
-        if (!Utils.checkInternetConnection(context)) {
+        if (!Utils.checkInternetConnection(Utils.context)) {
             binding.layoutNoInternetFavourites.setVisibility(View.VISIBLE);
             binding.layoutRecyclerViewFavourites.setVisibility(View.GONE);
             binding.swipeRefreshFavourites.setRefreshing(false);
@@ -155,31 +158,6 @@ public class FavouritesFragment extends Fragment {
                 binding.progressIndicatorFavourites.hide();
                 binding.progressIndicatorFavourites.setVisibility(View.GONE);
                 binding.swipeRefreshFavourites.setRefreshing(false);
-            }
-        });
-    }
-
-    public void getCatInfo(String id) {
-        binding.progressIndicatorFavourites.setVisibility(View.VISIBLE);
-        binding.progressIndicatorFavourites.show();
-        apiService.getAnswers(ApiUtils.API_KEY, id).enqueue(new Callback<InfoCatResponse>() {
-            @Override
-            public void onResponse(@NonNull Call<InfoCatResponse> call, @NonNull Response<InfoCatResponse> response) {
-                if (response.isSuccessful()) {
-                    Utils.infoCatResponse = response.body();
-                    Intent intent = new Intent(context, CatDescription.class);
-                    startActivity(intent);
-                    binding.progressIndicatorFavourites.hide();
-                    binding.progressIndicatorFavourites.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<InfoCatResponse> call, @NonNull Throwable t) {
-                Toast.makeText(context, "Nada papa - " + t, Toast.LENGTH_SHORT).show();
-                Log.e("Totiao", String.valueOf(t));
-                binding.progressIndicatorFavourites.hide();
-                binding.progressIndicatorFavourites.setVisibility(View.GONE);
             }
         });
     }

@@ -29,6 +29,7 @@
         android:id="@+id/layoutNoLogged"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="73dp"
         android:fitsSystemWindows="true"
         android:gravity="center"
         android:orientation="vertical"
@@ -61,6 +62,7 @@
         android:id="@+id/swipeRefresh_favourites"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginBottom="73dp"
         android:backgroundTint="@color/backgroundColorLightTheme"
         android:visibility="visible"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">

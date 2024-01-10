@@ -20,7 +20,7 @@ public class AccountFragment extends Fragment {
 
     }
 
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstaceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View viewLayout = inflater.inflate(R.layout.fragment_account, container, false);
 
         textView = viewLayout.findViewById(R.id.textview_account);

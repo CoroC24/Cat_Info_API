@@ -5,7 +5,6 @@
     android:id="@+id/fragment_signin"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/backgroundColorNightTheme"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout

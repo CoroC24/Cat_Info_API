@@ -9,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -19,10 +18,7 @@ import com.catapi.c4.model.Utils;
 import com.catapi.c4.view.fragments.AccountFragment;
 import com.catapi.c4.view.fragments.FavouritesFragment;
 import com.catapi.c4.view.fragments.MainFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -37,13 +33,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mainBinding = ActivityMainBinding.inflate(getLayoutInflater());
-        View rootView = mainBinding.getRoot();
-        setContentView(rootView);
+        setContentView(mainBinding.getRoot());
 
         checkOverlayPermission();
 
         mAuth = FirebaseAuth.getInstance();
-
         Utils.context = getApplicationContext();
 
         getSupportFragmentManager().beginTransaction()

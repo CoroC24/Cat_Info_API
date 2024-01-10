@@ -151,6 +151,10 @@ public class CatDescription extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     Snackbar.make(findViewById(android.R.id.content), "Cat added to favourites", Snackbar.LENGTH_SHORT).show();
                 }
+
+                if (response.code() == 400) {
+                    Snackbar.make(findViewById(android.R.id.content), "Cat already added to favourites", Snackbar.LENGTH_SHORT).show();
+                }
             }
 
             @Override
@@ -159,5 +163,12 @@ public class CatDescription extends AppCompatActivity {
                 Log.e("Totiao", String.valueOf(t));
             }
         });
+    }
+
+    private void deleteFavourites() {
+        if (currentUser == null) {
+            Snackbar.make(findViewById(android.R.id.content), "Log in to your account to delete cats favourites", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
     }
 }
