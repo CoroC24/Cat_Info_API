@@ -22,7 +22,7 @@ import com.catapi.c4.data.remote.ApiService;
 import com.catapi.c4.data.remote.ApiUtils;
 import com.catapi.c4.databinding.FragmentFavouritesBinding;
 import com.catapi.c4.model.Utils;
-import com.catapi.c4.view.activities.AuthActivity;
+import com.catapi.c4.view.activities.SignInActivity;
 import com.catapi.c4.view.adapter.AnswersFavouritesAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -58,7 +58,7 @@ public class FavouritesFragment extends Fragment {
         drawerLayout = requireActivity().findViewById(R.id.drawer_layout);
 
         binding.signInButtonFavourites.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), AuthActivity.class);
+            Intent intent = new Intent(getActivity(), SignInActivity.class);
             startActivity(intent);
         });
 
@@ -104,6 +104,8 @@ public class FavouritesFragment extends Fragment {
     public void onResume() {
         super.onResume();
 
+        currentUser = mAuth.getCurrentUser();
+
         if (currentUser != null) {
             binding.layoutNoLogged.setVisibility(View.GONE);
             binding.swipeRefreshFavourites.setVisibility(View.VISIBLE);
@@ -132,7 +134,10 @@ public class FavouritesFragment extends Fragment {
             return;
         } else if (currentUser == null) {
             binding.layoutNoLogged.setVisibility(View.VISIBLE);
+            binding.layoutRecyclerViewFavourites.setVisibility(View.GONE);
             binding.swipeRefreshFavourites.setVisibility(View.GONE);
+            binding.swipeRefreshFavourites.setRefreshing(false);
+            binding.progressIndicatorFavourites.hide();
             binding.progressIndicatorFavourites.setVisibility(View.GONE);
             return;
         } else {

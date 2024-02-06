@@ -29,7 +29,6 @@ public class Utils {
 
     public static Context context;
     public static FirebaseUser loggedUser;
-
     public static InfoCatResponse infoCatResponse;
 
     public static boolean checkInternetConnection(Context context) {
@@ -48,7 +47,6 @@ public class Utils {
                 return networkInfo != null && networkInfo.isConnected();
             }
         }
-
         return false;
     }
 

@@ -7,4 +7,7 @@
     <color name="backgroundColorNightTheme">#252525</color>
     <color name="textColorLightTheme">#3F3F3F</color>
     <color name="textColorNightTheme">#D6D6D6</color>
+
+    <color name="primary">#64FFDA</color>
+    <color name="on_primary">#80CBC4</color>
 </resources>

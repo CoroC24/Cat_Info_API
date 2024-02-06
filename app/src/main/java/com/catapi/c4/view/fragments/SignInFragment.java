@@ -50,9 +50,9 @@ public class SignInFragment extends Fragment {
             }
         });
 
-        binding.signUpClickableText.setOnClickListener(view -> requireActivity().getSupportFragmentManager().beginTransaction()
+        /*binding.signUpClickableText.setOnClickListener(view -> requireActivity().getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container_auth, new SignUpFragment(), "signUpFragment")
-                .commit());
+                .commit());*/
 
         return binding.getRoot();
     }

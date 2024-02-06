@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.fragment.app.Fragment;
 
 import com.catapi.c4.R;
-import com.catapi.c4.view.activities.AuthActivity;
+import com.catapi.c4.view.activities.SignInActivity;
 
 public class AccountFragment extends Fragment {
 
@@ -26,7 +26,7 @@ public class AccountFragment extends Fragment {
         textView = viewLayout.findViewById(R.id.textview_account);
 
         textView.setOnClickListener(view -> {
-            Intent intent = new Intent(getActivity(), AuthActivity.class);
+            Intent intent = new Intent(getActivity(), SignInActivity.class);
             startActivity(intent);
         });
 

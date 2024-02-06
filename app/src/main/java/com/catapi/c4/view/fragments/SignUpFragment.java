@@ -55,9 +55,9 @@ public class SignUpFragment extends Fragment {
         binding.signInClickableText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                requireActivity().getSupportFragmentManager().beginTransaction()
+                /*requireActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container_auth, new SignInFragment(), "signInFragment")
-                        .commit();
+                        .commit();*/
             }
         });
 

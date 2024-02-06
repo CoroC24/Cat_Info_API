@@ -2,9 +2,7 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.CatAPI" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
-        <item name="android:statusBarColor">@color/backgroundColorNightTheme</item>
-        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:statusBarColor">@color/m3_sys_color_dark_background</item>
     </style>
 
     <style name="Theme.CatAPI" parent="Base.Theme.CatAPI" />

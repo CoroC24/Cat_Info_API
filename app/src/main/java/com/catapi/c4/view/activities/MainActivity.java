@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -63,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 switchFragments(item.getItemId());
             } else if (item.getItemId() == R.id.logout_item) {
                 mAuth.signOut();
+                Utils.loggedUser = null;
             }
 
             setBottomMenuItem(item.getItemId());

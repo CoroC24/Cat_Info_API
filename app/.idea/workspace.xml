@@ -4,7 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea5dda87-9afd-4a20-8004-769160411615" name="Changes" comment="" />
+    <list default="true" id="ea5dda87-9afd-4a20-8004-769160411615" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/activities/SignInActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/activities/SignUpActivity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout-night/activity_sign_in.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout-night/activity_sign_up.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/activity_sign_in.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/res/layout/activity_sign_up.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/activities/AuthActivity.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/fragments/AccountFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/fragments/AccountFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/fragments/FavouritesFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/fragments/FavouritesFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/fragments/SignInFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/fragments/SignInFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/fragments/SignUpFragment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/catapi/c4/view/fragments/SignUpFragment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout-night/fragment_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout-night/fragment_main.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/activity_auth.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_favourites.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_favourites.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/res/layout/fragment_main.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/res/layout/fragment_main.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +32,9 @@
       <ProjectState />
     </projectState>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="2aBYijUUcLCP6U2nayUA3kKP5ep" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -22,7 +42,8 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true"
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "feature/login"
   }
 }]]></component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
