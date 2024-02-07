@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -14,11 +13,14 @@ import android.widget.Toast;
 
 import com.catapi.c4.R;
 import com.catapi.c4.data.AddFavouritesResponse;
+import com.catapi.c4.data.DeleteFavouritesResponse;
 import com.catapi.c4.data.InfoCatResponse;
+import com.catapi.c4.data.ListFavouritesResponse;
 import com.catapi.c4.data.remote.ApiService;
 import com.catapi.c4.data.remote.ApiUtils;
 import com.catapi.c4.model.AddFavouritesData;
 import com.catapi.c4.model.Breeds;
+import com.catapi.c4.model.ManageFavouritesCats;
 import com.catapi.c4.model.Utils;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -87,6 +89,20 @@ public class CatDescription extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         currentUser = mAuth.getCurrentUser();
+
+        String[] getFavCats = ManageFavouritesCats.getFavouritesCatsValues(getApplicationContext(), ManageFavouritesCats.FAV_CATS_KEY);
+
+        for (String catsIds : (getFavCats != null ? getFavCats : new String[0])) {
+            String[] favCatsIds = catsIds.split(":");
+
+            if (infoCatResponse.getId().equals(favCatsIds[0])) {
+                if (Utils.isNightModeActive()) {
+                    favouritesButton.setImageResource(R.drawable.ic_favourite_white_filled);
+                } else {
+                    favouritesButton.setImageResource(R.drawable.ic_favourite_black_filled);
+                }
+            }
+        }
     }
 
     public void getBreedsInfo(List<Breeds> breedsInfo) {
@@ -150,25 +166,65 @@ public class CatDescription extends AppCompatActivity {
             public void onResponse(@NonNull Call<AddFavouritesResponse> call, @NonNull Response<AddFavouritesResponse> response) {
                 if (response.isSuccessful()) {
                     Snackbar.make(findViewById(android.R.id.content), "Cat added to favourites", Snackbar.LENGTH_SHORT).show();
+
+                    for (ListFavouritesResponse idsFav : Utils.favouritesResponse) {
+                        if (idsFav.getImageId().equals(favouritesData.getImageId())) {
+                            String catId = favouritesData.getImageId() + ":" + idsFav.getId();
+                            ManageFavouritesCats.saveFavouritesCats(getApplicationContext(), ManageFavouritesCats.FAV_CATS_KEY, catId);
+                        }
+                    }
+
+                    if (Utils.isNightModeActive()) {
+                        favouritesButton.setImageResource(R.drawable.ic_favourite_white_filled);
+                    } else {
+                        favouritesButton.setImageResource(R.drawable.ic_favourite_black_filled);
+                    }
                 }
 
                 if (response.code() == 400) {
-                    Snackbar.make(findViewById(android.R.id.content), "Cat already added to favourites", Snackbar.LENGTH_SHORT).show();
+                    for (ListFavouritesResponse idsFav : Utils.favouritesResponse) {
+                        if (idsFav.getImageId().equals(favouritesData.getImageId())) {
+                            deleteFavourites(favouritesData.getImageId(), String.valueOf(idsFav.getId()));
+                        }
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<AddFavouritesResponse> call, @NonNull Throwable t) {
                 Toast.makeText(getApplicationContext(), "Nada papa - " + t, Toast.LENGTH_SHORT).show();
-                Log.e("Totiao", String.valueOf(t));
+                Log.e("Error Response", String.valueOf(t));
             }
         });
     }
 
-    private void deleteFavourites() {
+    private void deleteFavourites(String catImageId, String catFavouriteId) {
         if (currentUser == null) {
             Snackbar.make(findViewById(android.R.id.content), "Log in to your account to delete cats favourites", Snackbar.LENGTH_SHORT).show();
             return;
         }
+
+        apiService.deleteFavourites(ApiUtils.API_KEY, catFavouriteId).enqueue(new Callback<DeleteFavouritesResponse>() {
+            @Override
+            public void onResponse(@NonNull Call<DeleteFavouritesResponse> call, @NonNull Response<DeleteFavouritesResponse> response) {
+                if (response.isSuccessful()) {
+                    Snackbar.make(findViewById(android.R.id.content), "Cat deleted to favourites", Snackbar.LENGTH_SHORT).show();
+
+                    if (Utils.isNightModeActive()) {
+                        favouritesButton.setImageResource(R.drawable.ic_favourite_white);
+                    } else {
+                        favouritesButton.setImageResource(R.drawable.ic_favourite_black);
+                    }
+
+                    ManageFavouritesCats.deleteFavouritesCats(getApplicationContext(), ManageFavouritesCats.FAV_CATS_KEY, catImageId + ":" + catFavouriteId);
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<DeleteFavouritesResponse> call, @NonNull Throwable t) {
+                Toast.makeText(getApplicationContext(), "Nada papa - " + t, Toast.LENGTH_SHORT).show();
+                Log.e("Error Response", String.valueOf(t));
+            }
+        });
     }
 }

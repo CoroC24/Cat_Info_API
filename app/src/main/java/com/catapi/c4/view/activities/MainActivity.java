@@ -12,12 +12,16 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.catapi.c4.R;
+import com.catapi.c4.data.ListFavouritesResponse;
 import com.catapi.c4.databinding.ActivityMainBinding;
+import com.catapi.c4.model.ManageFavouritesCats;
 import com.catapi.c4.model.Utils;
 import com.catapi.c4.view.fragments.AccountFragment;
 import com.catapi.c4.view.fragments.FavouritesFragment;
 import com.catapi.c4.view.fragments.MainFragment;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -63,6 +67,11 @@ public class MainActivity extends AppCompatActivity {
             } else if (item.getItemId() == R.id.logout_item) {
                 mAuth.signOut();
                 Utils.loggedUser = null;
+
+                for (ListFavouritesResponse data : Objects.requireNonNull(Utils.favouritesResponse)) {
+                    String catId = data.getImageId() + ":" + data.getId();
+                    ManageFavouritesCats.deleteFavouritesCats(getApplicationContext(), ManageFavouritesCats.FAV_CATS_KEY, catId);
+                }
             }
 
             setBottomMenuItem(item.getItemId());
@@ -82,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == 1234) {
+        if (requestCode == 11011) {
             if (Settings.canDrawOverlays(this)) {
                 Toast.makeText(this, "OVERLAY PERMISSION ENABLED", Toast.LENGTH_LONG).show();
             } else {
@@ -96,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
         if (!Settings.canDrawOverlays(this)) {
             Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION,
                     Uri.parse("package:" + getPackageName()));
-            startActivityForResult(intent, 1234);
+            startActivityForResult(intent, 11011);
         }
     }
 

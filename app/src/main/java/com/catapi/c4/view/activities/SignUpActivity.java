@@ -24,9 +24,8 @@ import kotlin.collections.ArraysKt;
 public class SignUpActivity extends AppCompatActivity {
 
     private ActivitySignUpBinding binding;
-    private String username, pass, rpass, email;
+    private String username, pass, rPass, email;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase firebaseDB;
     private DatabaseReference usersRefDB;
 
     @Override
@@ -36,7 +35,7 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         mAuth = FirebaseAuth.getInstance();
-        firebaseDB = FirebaseDatabase.getInstance();
+        FirebaseDatabase firebaseDB = FirebaseDatabase.getInstance();
         usersRefDB = firebaseDB.getReference("users");
 
         getDataEntered();
@@ -57,7 +56,7 @@ public class SignUpActivity extends AppCompatActivity {
         email = Objects.requireNonNull(binding.InputEmailSP.getEditText()).getText().toString();
         username = Objects.requireNonNull(binding.InputUserNameSP.getEditText()).getText().toString();
         pass = Objects.requireNonNull(binding.InputPasswordSP.getEditText()).getText().toString();
-        rpass = Objects.requireNonNull(binding.InputRPasswordSP.getEditText()).getText().toString();
+        rPass = Objects.requireNonNull(binding.InputRPasswordSP.getEditText()).getText().toString();
     }
 
     /*----------------------------- Methods to validate data entered -----------------------------*/
@@ -112,10 +111,10 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private boolean rPassCorrect() {
-        if (rpass.isEmpty()) {
+        if (rPass.isEmpty()) {
             binding.InputRPasswordSP.setError("Field cannot be empty");
             return false;
-        } else if (!rpass.equals(pass)) {
+        } else if (!rPass.equals(pass)) {
             binding.InputRPasswordSP.setError("The password is not the same");
             Snackbar.make(findViewById(android.R.id.content), R.string.password_same, Snackbar.LENGTH_SHORT).show();
             Objects.requireNonNull(binding.InputRPasswordSP.getEditText()).setText("");
@@ -149,7 +148,6 @@ public class SignUpActivity extends AppCompatActivity {
         }
         if (pass.matches(".*[(?=\\S+$)].*")) {
             Snackbar.make(findViewById(android.R.id.content), R.string.pass_regex_spaces, Snackbar.LENGTH_SHORT).show();
-            return;
         }
     }
 

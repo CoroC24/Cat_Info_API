@@ -1,6 +1,7 @@
 package com.catapi.c4.data.remote;
 
 import com.catapi.c4.data.AddFavouritesResponse;
+import com.catapi.c4.data.DeleteFavouritesResponse;
 import com.catapi.c4.data.InfoCatResponse;
 import com.catapi.c4.data.ListCatResponse;
 import com.catapi.c4.data.ListFavouritesResponse;
@@ -10,6 +11,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -34,4 +36,8 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @POST("favourites")
     Call<AddFavouritesResponse> addFavourites(@Header("x-api-key") String apiKey, @Body AddFavouritesData favouritesData);
+
+    @Headers("Content-Type: application/json")
+    @DELETE("favourites/{favouriteId}")
+    Call<DeleteFavouritesResponse> deleteFavourites(@Header("x-api-key") String apiKey, @Path("favouriteId") String id);
 }

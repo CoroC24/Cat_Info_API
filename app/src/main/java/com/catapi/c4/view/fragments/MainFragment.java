@@ -51,7 +51,7 @@ public class MainFragment extends Fragment {
         drawerLayout = requireActivity().findViewById(R.id.drawer_layout);
         apiService = ApiUtils.getApiService();
 
-        answersAdapter = new AnswersAdapter(context, new ArrayList<>(0), data -> {
+        answersAdapter = new AnswersAdapter(new ArrayList<>(0), data -> {
             binding.progressIndicator.setVisibility(View.VISIBLE);
             binding.progressIndicator.show();
 
@@ -125,7 +125,7 @@ public class MainFragment extends Fragment {
             @Override
             public void onFailure(@NonNull Call<List<ListCatResponse>> call, @NonNull Throwable t) {
                 Toast.makeText(context, "Nada papa - " + t, Toast.LENGTH_SHORT).show();
-                Log.e("Totiao", String.valueOf(t));
+                Log.e("Error Response", String.valueOf(t));
                 binding.progressIndicator.hide();
                 binding.progressIndicator.setVisibility(View.GONE);
                 binding.swipeRefresh.setRefreshing(false);

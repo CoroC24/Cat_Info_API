@@ -1,6 +1,5 @@
 package com.catapi.c4.view.adapter;
 
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +8,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.catapi.c4.R;
 import com.catapi.c4.data.ListCatResponse;
 import com.squareup.picasso.Picasso;
@@ -20,12 +17,10 @@ import java.util.List;
 public class AnswersAdapter extends RecyclerView.Adapter<AnswersAdapter.ViewHolder> {
 
     private List<ListCatResponse> data;
-    private Context context;
-    private OnItemClickListener itemClickListener;
+    private final OnItemClickListener itemClickListener;
 
-    public AnswersAdapter(Context context, List<ListCatResponse> data, OnItemClickListener itemClickListener) {
+    public AnswersAdapter(List<ListCatResponse> data, OnItemClickListener itemClickListener) {
         this.data = data;
-        this.context = context;
         this.itemClickListener = itemClickListener;
     }
 

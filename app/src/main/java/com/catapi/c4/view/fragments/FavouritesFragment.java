@@ -21,6 +21,7 @@ import com.catapi.c4.data.ListFavouritesResponse;
 import com.catapi.c4.data.remote.ApiService;
 import com.catapi.c4.data.remote.ApiUtils;
 import com.catapi.c4.databinding.FragmentFavouritesBinding;
+import com.catapi.c4.model.ManageFavouritesCats;
 import com.catapi.c4.model.Utils;
 import com.catapi.c4.view.activities.SignInActivity;
 import com.catapi.c4.view.adapter.AnswersFavouritesAdapter;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -62,7 +64,7 @@ public class FavouritesFragment extends Fragment {
             startActivity(intent);
         });
 
-        answersFavouritesAdapter = new AnswersFavouritesAdapter(context, new ArrayList<>(0), data -> {
+        answersFavouritesAdapter = new AnswersFavouritesAdapter(new ArrayList<>(0), data -> {
             binding.progressIndicatorFavourites.setVisibility(View.VISIBLE);
             binding.progressIndicatorFavourites.show();
 
@@ -134,10 +136,7 @@ public class FavouritesFragment extends Fragment {
             return;
         } else if (currentUser == null) {
             binding.layoutNoLogged.setVisibility(View.VISIBLE);
-            binding.layoutRecyclerViewFavourites.setVisibility(View.GONE);
             binding.swipeRefreshFavourites.setVisibility(View.GONE);
-            binding.swipeRefreshFavourites.setRefreshing(false);
-            binding.progressIndicatorFavourites.hide();
             binding.progressIndicatorFavourites.setVisibility(View.GONE);
             return;
         } else {
@@ -153,13 +152,20 @@ public class FavouritesFragment extends Fragment {
                     binding.progressIndicatorFavourites.hide();
                     binding.progressIndicatorFavourites.setVisibility(View.GONE);
                     binding.swipeRefreshFavourites.setRefreshing(false);
+
+                    Utils.favouritesResponse = response.body();
+
+                    for (ListFavouritesResponse data : Objects.requireNonNull(response.body())) {
+                        String catId = data.getImageId() + ":" + data.getId();
+                        ManageFavouritesCats.saveFavouritesCats(context, ManageFavouritesCats.FAV_CATS_KEY, catId);
+                    }
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<ListFavouritesResponse>> call, @NonNull Throwable t) {
                 Toast.makeText(context, "Nada papa - " + t, Toast.LENGTH_SHORT).show();
-                Log.e("Totiao", String.valueOf(t));
+                Log.e("Error Response", String.valueOf(t));
                 binding.progressIndicatorFavourites.hide();
                 binding.progressIndicatorFavourites.setVisibility(View.GONE);
                 binding.swipeRefreshFavourites.setRefreshing(false);
