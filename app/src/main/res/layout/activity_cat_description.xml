@@ -64,7 +64,7 @@
                         android:layout_gravity="center"
                         android:layout_weight="7"
                         android:backgroundTint="@color/transparent"
-                        android:contentDescription="@string/favorite"
+                        android:contentDescription="@string/favourite"
                         android:minHeight="48dp"
                         android:src="@drawable/ic_favourite_black" />
 

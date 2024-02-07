@@ -17,9 +17,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:minHeight="?attr/actionBarSize"
-            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_scrollEffect="compress"
+            app:layout_scrollFlags="scroll|enterAlways|snap"
             app:navigationContentDescription="Toolbar Favourites"
-            app:navigationIcon="@drawable/ic_menu_black" />
+            app:navigationIcon="@drawable/ic_menu_black"
+            app:title="@string/favourites_title"
+            app:titleCentered="true" />
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -49,8 +52,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
-                android:paddingBottom="100dp"
                 android:orientation="vertical"
+                android:paddingBottom="100dp"
                 android:visibility="gone">
 
                 <ImageView
@@ -86,7 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:gravity="center"
-                    android:text="Log in to your account to view your favorites"
+                    android:text="Log in to your account to view your favourites"
                     android:textSize="20sp" />
 
                 <TextView
