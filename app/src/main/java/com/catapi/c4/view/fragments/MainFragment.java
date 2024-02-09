@@ -1,12 +1,15 @@
 package com.catapi.c4.view.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -17,12 +20,16 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.catapi.c4.R;
+import com.catapi.c4.data.InfoCatResponse;
 import com.catapi.c4.data.ListCatResponse;
 import com.catapi.c4.data.remote.ApiService;
 import com.catapi.c4.data.remote.ApiUtils;
 import com.catapi.c4.databinding.FragmentMainBinding;
+import com.catapi.c4.model.Breeds;
 import com.catapi.c4.model.Utils;
+import com.catapi.c4.view.activities.CatDescription;
 import com.catapi.c4.view.adapter.AnswersAdapter;
+import com.google.android.material.progressindicator.LinearProgressIndicator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -87,6 +94,21 @@ public class MainFragment extends Fragment {
             }
         });
 
+        binding.searchView.getEditText().setOnEditorActionListener((textView, i, keyEvent) -> {
+            binding.progressIndicator.setVisibility(View.VISIBLE);
+            binding.progressIndicator.show();
+            binding.searchView.hide();
+
+            if (!binding.searchView.getText().toString().equals("")) {
+                binding.searchBar.setText(binding.searchView.getText());
+                searchCat(String.valueOf(binding.searchView.getText()));
+            } else {
+                binding.searchBar.setText(binding.searchView.getText());
+                loadData();
+            }
+            return false;
+        });
+
         loadData();
         swipeRefresh();
 
@@ -112,6 +134,30 @@ public class MainFragment extends Fragment {
         }
 
         apiService.getAnswers(ApiUtils.API_KEY).enqueue(new Callback<List<ListCatResponse>>() {
+            @Override
+            public void onResponse(@NonNull Call<List<ListCatResponse>> call, @NonNull Response<List<ListCatResponse>> response) {
+                if (response.isSuccessful()) {
+                    answersAdapter.updateAnswersCats(response.body());
+                    binding.progressIndicator.hide();
+                    binding.progressIndicator.setVisibility(View.GONE);
+                    binding.swipeRefresh.setRefreshing(false);
+                    binding.searchBar.setText("");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<List<ListCatResponse>> call, @NonNull Throwable t) {
+                Toast.makeText(context, "Nada papa - " + t, Toast.LENGTH_SHORT).show();
+                Log.e("Error Response", String.valueOf(t));
+                binding.progressIndicator.hide();
+                binding.progressIndicator.setVisibility(View.GONE);
+                binding.swipeRefresh.setRefreshing(false);
+            }
+        });
+    }
+
+    private void searchCat(String catName) {
+        apiService.getCatsBySearch(ApiUtils.API_KEY, 50, 1, catName).enqueue(new Callback<List<ListCatResponse>>() {
             @Override
             public void onResponse(@NonNull Call<List<ListCatResponse>> call, @NonNull Response<List<ListCatResponse>> response) {
                 if (response.isSuccessful()) {

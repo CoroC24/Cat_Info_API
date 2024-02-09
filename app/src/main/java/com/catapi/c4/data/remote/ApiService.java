@@ -40,4 +40,10 @@ public interface ApiService {
     @Headers("Content-Type: application/json")
     @DELETE("favourites/{favouriteId}")
     Call<DeleteFavouritesResponse> deleteFavourites(@Header("x-api-key") String apiKey, @Path("favouriteId") String id);
+
+    @GET("images/search")
+    Call<List<ListCatResponse>> getCatsBySearch(@Header("x-api-key") String apiKey,
+                                                @Query("limit") int limit,
+                                                @Query("has_breeds") int hasBreeds,
+                                                @Query("breed_ids") String catName);
 }
