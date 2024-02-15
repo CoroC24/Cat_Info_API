@@ -93,11 +93,11 @@ public class FavouritesFragment extends Fragment {
 
         if (currentUser != null) {
             binding.layoutNoLogged.setVisibility(View.GONE);
-            binding.swipeRefreshFavourites.setVisibility(View.VISIBLE);
+            binding.layoutRecyclerViewFavourites.setVisibility(View.VISIBLE);
             loadFavouritesData();
         } else {
             binding.layoutNoLogged.setVisibility(View.VISIBLE);
-            binding.swipeRefreshFavourites.setVisibility(View.GONE);
+            binding.layoutRecyclerViewFavourites.setVisibility(View.GONE);
             binding.progressIndicatorFavourites.setVisibility(View.GONE);
         }
     }
@@ -110,11 +110,11 @@ public class FavouritesFragment extends Fragment {
 
         if (currentUser != null) {
             binding.layoutNoLogged.setVisibility(View.GONE);
-            binding.swipeRefreshFavourites.setVisibility(View.VISIBLE);
+            binding.layoutRecyclerViewFavourites.setVisibility(View.VISIBLE);
             loadFavouritesData();
         } else {
             binding.layoutNoLogged.setVisibility(View.VISIBLE);
-            binding.swipeRefreshFavourites.setVisibility(View.GONE);
+            binding.layoutRecyclerViewFavourites.setVisibility(View.GONE);
             binding.progressIndicatorFavourites.setVisibility(View.GONE);
         }
     }
@@ -136,10 +136,11 @@ public class FavouritesFragment extends Fragment {
             return;
         } else if (currentUser == null) {
             binding.layoutNoLogged.setVisibility(View.VISIBLE);
-            binding.swipeRefreshFavourites.setVisibility(View.GONE);
+            binding.layoutRecyclerViewFavourites.setVisibility(View.GONE);
             binding.progressIndicatorFavourites.setVisibility(View.GONE);
             return;
         } else {
+            binding.layoutNoLogged.setVisibility(View.GONE);
             binding.layoutNoInternetFavourites.setVisibility(View.GONE);
             binding.layoutRecyclerViewFavourites.setVisibility(View.VISIBLE);
         }

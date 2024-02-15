@@ -25,6 +25,7 @@ import com.catapi.c4.view.activities.CatDescription;
 import com.google.android.material.progressindicator.LinearProgressIndicator;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -36,7 +37,7 @@ public class Utils {
     public static Context context;
     public static FirebaseUser loggedUser;
     public static InfoCatResponse infoCatResponse;
-    public static List<ListFavouritesResponse> favouritesResponse;
+    public static List<ListFavouritesResponse> favouritesResponse = new ArrayList<>();
 
     public static boolean checkInternetConnection(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);

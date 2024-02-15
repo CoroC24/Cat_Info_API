@@ -68,9 +68,11 @@ public class MainActivity extends AppCompatActivity {
                 mAuth.signOut();
                 Utils.loggedUser = null;
 
-                for (ListFavouritesResponse data : Objects.requireNonNull(Utils.favouritesResponse)) {
-                    String catId = data.getImageId() + ":" + data.getId();
-                    ManageFavouritesCats.deleteFavouritesCats(getApplicationContext(), ManageFavouritesCats.FAV_CATS_KEY, catId);
+                if (Utils.favouritesResponse != null) {
+                    for (ListFavouritesResponse data : Utils.favouritesResponse) {
+                        String catId = data.getImageId() + ":" + data.getId();
+                        ManageFavouritesCats.deleteFavouritesCats(getApplicationContext(), ManageFavouritesCats.FAV_CATS_KEY, catId);
+                    }
                 }
             }
 
